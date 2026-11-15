@@ -7,7 +7,7 @@ import time
 from PIL import Image, ImageDraw, ImageTk
 # screen 
 screen = turtle.Screen()
-screen.title("tRGB")
+screen.title("Loading...")
 screen.setup(width=600, height=600)
 screen.bgcolor('black')
 screen.colormode(1.0)
