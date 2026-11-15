@@ -7,7 +7,7 @@ import time
 from PIL import Image, ImageDraw, ImageTk
 # screen 
 screen = turtle.Screen()
-screen.title("trianRGBle")
+screen.title("tRGB")
 screen.setup(width=600, height=600)
 screen.bgcolor('black')
 screen.colormode(1.0)
@@ -38,8 +38,8 @@ def update_fps():
     global frames, last
     frames += 1
     now = time.time()
-    if now - last >= 0.25:                       # per millisec
-        screen.title(f"trianRGBle - {frames / (now - last):.1f} FPS")
+    if now - last >= 0.01:                       # per millisec
+        screen.title(f"tRGB - {frames / (now - last):.1f} FPS")
         frames = 0
         last = now
 # triangle corners and center
