@@ -10,7 +10,7 @@ a rainbow triangle written in Python.
 
 ## Installation and use
 ``` Copy & Paste this to your terminal...
-git clone [https://github.com/akettunen/trianRGBle.git](https://github.com/akettunen/tRGB.git)
+git clone https://github.com/akettunen/tRGB.git
 cd tRGB
 python3 tRGB.py
 ```
