@@ -5,6 +5,7 @@ import colorsys
 import ctypes
 import time
 from PIL import Image, ImageDraw, ImageTk
+import sys
 # screen 
 screen = turtle.Screen()
 screen.title("Loading...")
@@ -14,8 +15,9 @@ screen.colormode(1.0)
 screen.tracer(0)
 # title bar to dark
 screen.update()
-hwnd = ctypes.windll.user32.GetParent(screen._root.winfo_id())
-ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, 20, ctypes.byref(ctypes.c_int(1)), 4)
+if sys.platform == "win32":
+    hwnd = ctypes.windll.user32.GetParent(screen._root.winfo_id())
+    ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, 20, ctypes.byref(ctypes.c_int(1)), 4)
 # canvas 
 cv = screen.getcanvas()
 cv.config(bg='black', highlightthickness=0, bd=0)
