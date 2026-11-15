@@ -1,10 +1,10 @@
 # COPYRIGHT (C) akettunen 2026
 # imports
-import sys
 import turtle
 import colorsys
 import ctypes
 import time
+from PIL import Image, ImageDraw, ImageTk
 # screen 
 screen = turtle.Screen()
 screen.title("trianRGBle")
@@ -14,23 +14,16 @@ screen.colormode(1.0)
 screen.tracer(0)
 # title bar to dark
 screen.update()
-if sys.platform == "win32":
-    try:
-        hwnd = ctypes.windll.user32.GetParent(screen._root.winfo_id())
-        ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, 20, ctypes.byref(ctypes.c_int(1)), 4)
-    except Exception:
-        pass
+hwnd = ctypes.windll.user32.GetParent(screen._root.winfo_id())
+ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, 20, ctypes.byref(ctypes.c_int(1)), 4)
 # canvas 
 cv = screen.getcanvas()
-try:
-    cv.config(bg='black', highlightthickness=0, bd=0)
-    cv._canvas.config(bg='black', highlightthickness=0, bd=0)
-    cv._canvas.grid_configure(padx=0, pady=0)
-    cv.hscroll.grid_remove()
-    cv.vscroll.grid_remove()
-    screen._root.config(bg='black')
-except Exception:
-    pass
+cv.config(bg='black', highlightthickness=0, bd=0)
+cv._canvas.config(bg='black', highlightthickness=0, bd=0)
+cv._canvas.grid_configure(padx=0, pady=0)
+cv.hscroll.grid_remove()
+cv.vscroll.grid_remove()
+screen._root.config(bg='black')
 # turtle
 t = turtle.Turtle()
 t.hideturtle()
@@ -45,7 +38,7 @@ def update_fps():
     global frames, last
     frames += 1
     now = time.time()
-    if now - last >= 1:                       # per sec
+    if now - last >= 0.25:                       # per millisec
         screen.title(f"trianRGBle - {frames / (now - last):.1f} FPS")
         frames = 0
         last = now
@@ -68,46 +61,84 @@ for s in range(3):
     for j in range(pieces + 1):
         points.append(lerp(corners[s], corners[s + 1], j / pieces))
 
-def draw_frame():
-    global offset
-    t.clear()
-    i = 0
+# palette
+STEPS = 600
+palette = []
+for k in range(STEPS):
+    r, g, b = colorsys.hsv_to_rgb(k / STEPS, 1, 1)
+    palette.append("#%02x%02x%02x" % (int(r * 255), int(g * 255), int(b * 255)))
+
+step = STEPS // total
+SUB = 2
+NFRAMES = STEPS // SUB
+
+# prerender every frame
+MARGIN = 10
+minx = -side / 2 - MARGIN
+maxy = 2 * h / 3 + MARGIN
+W = int(side + 2 * MARGIN)
+H = int(h + 2 * MARGIN)
+def to_px(p):
+    return (p[0] - minx, maxy - p[1])
+cpx = to_px(center)
+pts_px = [to_px(p) for p in points]
+R = 7.5
+
+def render(base):
+    img = Image.new("RGB", (W, H), "black")
+    d = ImageDraw.Draw(img)
     # rainbow effect 1
-    t.width(1)
-    for s in range(3):
-        for j in range(pieces):
-            p1 = points[s * (pieces + 1) + j]
-            p2 = points[s * (pieces + 1) + j + 1]
-            color = colorsys.hsv_to_rgb((i / total + offset) % 1, 1, 1)
-            t.color(color)
-            t.penup()
-            t.goto(center)
-            t.pendown()
-            t.begin_fill()
-            t.goto(p1)
-            t.goto(p2)
-            t.goto(center)
-            t.end_fill()
-            i += 1
-
+    for i in range(total):
+        s, j = divmod(i, pieces)
+        p1 = pts_px[s * (pieces + 1) + j]
+        p2 = pts_px[s * (pieces + 1) + j + 1]
+        c = palette[(i * step + base) % STEPS]
+        d.polygon([cpx, p1, p2], fill=c, outline=c)
     # rainbow effect 2
-    t.width(15)
-    i = 0
-    for s in range(3):
-        for j in range(pieces):
-            p1 = points[s * (pieces + 1) + j]
-            p2 = points[s * (pieces + 1) + j + 1]
-            t.pencolor(colorsys.hsv_to_rgb((i / total + offset) % 1, 1, 1))
-            t.penup()
-            t.goto(p1)
-            t.pendown()
-            t.goto(p2)
-            i += 1
+    for i in range(total):
+        s, j = divmod(i, pieces)
+        p1 = pts_px[s * (pieces + 1) + j]
+        p2 = pts_px[s * (pieces + 1) + j + 1]
+        c = palette[(i * step + base) % STEPS]
+        d.line([p1, p2], fill=c, width=15)
+        for x, y in (p1, p2):
+            d.ellipse([x - R, y - R, x + R, y + R], fill=c)
+    return ImageTk.PhotoImage(img)
 
-    screen.update()
+raw = cv._canvas
+frames_img = [render(f * SUB) for f in range(NFRAMES)]
+# x, y
+img_x = minx + W / 2
+img_y = -(maxy - H / 2)
+item = raw.create_image(img_x, img_y, image=frames_img[0])
+
+# clean exit
+running = True
+def on_close():
+    global running
+    running = False
+screen._root.protocol("WM_DELETE_WINDOW", on_close)
+
+current = 0
+itemconfigure = raw.itemconfigure
+update = screen._root.update
+clock = time.perf_counter
+
+def draw_frame():
+    global current
+    idx = int(offset * NFRAMES) % NFRAMES
+    if idx != current:               # only touch the canvas when the image changes
+        itemconfigure(item, image=frames_img[idx])
+        current = idx
+    update()
     update_fps()
-    offset = (offset + 0.005) % 1
-    screen.ontimer(draw_frame, 20)
 
-draw_frame()
-turtle.done()
+SPEED = 0.32 # change cycle speed (higher=faster)
+
+start = clock()
+while running:
+    offset = ((clock() - start) * SPEED) % 1
+    try:
+        draw_frame()
+    except Exception:
+        break
