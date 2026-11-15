@@ -1,4 +1,4 @@
-# trianRGBle
+# tRGB
 a rainbow triangle written in Python.
 
 ## Supported systems:
