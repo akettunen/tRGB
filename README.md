@@ -11,7 +11,8 @@ git clone https://github.com/akettunen/trianRGBle.git
 cd trianRGBle
 python3 tRGB.py
 ```
-### $\color{yellow}{\textsf{You might need to install}}$ [Tkinter](https://docs.python.org/3/library/tkinter.html)
+> [!WARNING]
+> You might need to install [Tkinter](https://docs.python.org/3/library/tkinter.html)
 
 ## Requirements
 + [Python](https://www.python.org/downloads/)
