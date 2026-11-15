@@ -14,6 +14,6 @@ python3 tRGB.py
 ### Requirements
 + [Python](https://www.python.org/downloads/)
 
-### Licence & Copyright
+# Licence & Copyright
 + COPYRIGHT (C) akettunen 2026
 + [Licence](https://github.com/akettunen/trianRGBle/blob/main/LICENSE)
