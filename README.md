@@ -17,4 +17,7 @@ python3 tRGB.py
 
 # Licence & Copyright
 + COPYRIGHT (C) akettunen 2026
-+ [Licence](https://github.com/akettunen/trianRGBle/blob/main/LICENSE) 
++ [Licence](https://github.com/akettunen/trianRGBle/blob/main/LICENSE)
+
+## Extra
++ [Inspiration](https://codeberg.org/oonville/renderer)
