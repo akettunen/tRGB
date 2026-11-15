@@ -10,3 +10,5 @@ git clone https://github.com/akettunen/trianRGBle.git
 cd trianRGBle
 python3 tRGB.py
 ```
+### Requirements
++ [Python](https://www.python.org)
