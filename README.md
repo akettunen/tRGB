@@ -11,12 +11,9 @@ git clone https://github.com/akettunen/trianRGBle.git
 cd trianRGBle
 python3 tRGB.py
 ```
-###  Install [Tkinter](https://docs.python.org/3/library/tkinter.html) on [Arch Linux](https://archlinux.org/)
+### You might need to install [Tkinter](https://docs.python.org/3/library/tkinter.html)
 ```
-sudo pacman -S tk
-git clone https://github.com/akettunen/trianRGBle.git
-cd trianRGBle
-python3 tRGB.py
+pip install tk
 ```
 
 ## Requirements
