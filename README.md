@@ -1,6 +1,8 @@
 # trianRGBle
 a rainbow triangle written in Python.
-+ Should work on [Linux](https://www.linux.org/pages/download/), [Windows](https://www.microsoft.com/en-us/software-download/) & [MacOS](https://support.apple.com/en-us/102662)
+
+## Supported systems:
+[Linux](https://www.linux.org/pages/download/), [Windows](https://www.microsoft.com/en-us/software-download/) & [MacOS](https://support.apple.com/en-us/102662)
 
 ## Preview
 <img width="320" height="240" alt="tRGB" src="https://github.com/user-attachments/assets/f7fa4a7d-5973-4417-a948-86fd11d0f82e" />
