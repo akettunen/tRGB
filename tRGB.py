@@ -1,11 +1,10 @@
 # COPYRIGHT (C) akettunen 2026
 # imports
+import sys
 import turtle
 import colorsys
 import ctypes
 import time
-# title
-
 # screen 
 screen = turtle.Screen()
 screen.title("trianRGBle")
@@ -15,16 +14,23 @@ screen.colormode(1.0)
 screen.tracer(0)
 # title bar to dark
 screen.update()
-hwnd = ctypes.windll.user32.GetParent(screen._root.winfo_id())
-ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, 20, ctypes.byref(ctypes.c_int(1)), 4)
+if sys.platform == "win32":
+    try:
+        hwnd = ctypes.windll.user32.GetParent(screen._root.winfo_id())
+        ctypes.windll.dwmapi.DwmSetWindowAttribute(hwnd, 20, ctypes.byref(ctypes.c_int(1)), 4)
+    except Exception:
+        pass
 # canvas 
 cv = screen.getcanvas()
-cv.config(bg='black', highlightthickness=0, bd=0)
-cv._canvas.config(bg='black', highlightthickness=0, bd=0)
-cv._canvas.grid_configure(padx=0, pady=0)
-cv.hscroll.grid_remove()
-cv.vscroll.grid_remove()
-screen._root.config(bg='black')
+try:
+    cv.config(bg='black', highlightthickness=0, bd=0)
+    cv._canvas.config(bg='black', highlightthickness=0, bd=0)
+    cv._canvas.grid_configure(padx=0, pady=0)
+    cv.hscroll.grid_remove()
+    cv.vscroll.grid_remove()
+    screen._root.config(bg='black')
+except Exception:
+    pass
 # turtle
 t = turtle.Turtle()
 t.hideturtle()
