@@ -11,4 +11,4 @@ cd trianRGBle
 python3 tRGB.py
 ```
 ### Requirements
-+ [Python](https://www.python.org/download)
++ [Python](https://www.python.org/downloads/)
