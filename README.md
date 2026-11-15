@@ -10,8 +10,8 @@ a rainbow triangle written in Python.
 
 ## Installation and use
 ``` Copy & Paste this to your terminal...
-git clone https://github.com/akettunen/trianRGBle.git
-cd trianRGBle
+git clone [https://github.com/akettunen/trianRGBle.git](https://github.com/akettunen/tRGB.git)
+cd tRGB
 python3 tRGB.py
 ```
 ### $\color{#d4a017}{\textbf{\textsf{! }}}$ You might need to install [Tkinter](https://docs.python.org/3/library/tkinter.html)
