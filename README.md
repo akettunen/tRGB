@@ -12,9 +12,6 @@ cd trianRGBle
 python3 tRGB.py
 ```
 ### You might need to install [Tkinter](https://docs.python.org/3/library/tkinter.html)
-```
-pip install tk
-```
 
 ## Requirements
 + [Python](https://www.python.org/downloads/)
